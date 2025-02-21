@@ -57,12 +57,24 @@ export const escape_xml = (str: string): string => {
     });
 }
 
+/**
+ * Converts an image from url to base64 to be encoded in an svg
+ * @param url url to convert
+ * @returns base64 encoded image
+ */
+
 export const image_to_base64 = async (url: string): Promise<string> => {
     const response: Response = await fetch(url);
     const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
     const buffer: Buffer = Buffer.from(arrayBuffer);
     return buffer.toString('base64');
 }
+
+/**
+ * Converts a url to url encoded svg text
+ * @param url url to convert
+ * @returns url encoded svg 
+ */
 
 export const image_to_svg = async (url: string): Promise<string> => {
     const response: Response = await fetch(url);
@@ -71,6 +83,11 @@ export const image_to_svg = async (url: string): Promise<string> => {
     const svgText:string = buffer.toString('utf-8');
     return encodeURIComponent(svgText);
 }
+
+/**
+ * Gets the ctftime logo from a local file
+ * @returns svg as string
+ */
 
 export const get_ctftime_logo = async (): Promise<string> => {
     return encodeURIComponent(await fs.readFile("./imgs/logo.svg", 'utf-8'));
