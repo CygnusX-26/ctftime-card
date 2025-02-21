@@ -3,7 +3,7 @@
 Get dynamically generated ctftime statistics for your READMEs.
 
 ## Examples
-![b01lers](https://ctf.neilhommes.xyz/?teamid=11464&theme=light)
+![My ctftime stats](https://ctf.neilhommes.xyz/?teamid=11464&theme=light)
 ![b01lers](https://ctf.neilhommes.xyz/?teamid=11464&theme=dark)
 
 ## Usage
