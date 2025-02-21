@@ -1,3 +1,4 @@
+import { get_ctftime_logo, image_to_base64, image_to_svg } from "../utils/utils";
 
 interface Dimensions {
     width: number,
@@ -38,14 +39,11 @@ export default class TeamCard {
      * @returns the svg
      */
 
-    render_svg(): string {
-        
+    async render_svg(): Promise<string> {
         let global_percentage: number = 1.0;
         if (!isNaN(this.global_rating) && this.global_rating <= 200) {
             global_percentage = this.global_rating / 200;
         }
-
-        
 
         let country_percentage: number = 1.0;
         if (!isNaN(this.country_rating) && this.country_rating <= 200) {
@@ -55,8 +53,12 @@ export default class TeamCard {
         const global_bar_fill: number = Math.floor((1 - global_percentage) * 300);
         const country_bar_fill: number = Math.floor((1 - country_percentage) * 300);
 
-        let logo_str: string = this.logo.length > 0 ? `<image x="320" y="20" width="60" height="60" href="${this.logo}"/>`: "";
-        let country_str: string = this.country.length > 0 ? `<image x="100" y="110" width="20" height="20" href="https://ctftime.org/static/images/sf/${this.country.toLowerCase()}.svg"/>` : "";
+        const logo_b64: string = await image_to_base64(this.logo);
+        const country_flag = await image_to_svg(`https://ctftime.org/static/images/sf/${this.country.toLowerCase()}.svg`);
+        const ctftime_logo = await get_ctftime_logo();
+
+        let logo_str: string = this.logo.length > 0 ? `<image x="320" y="20" width="60" height="60" href="data:image/png;base64,${logo_b64}"/>`: "";
+        let country_str: string = this.country.length > 0 ? `<image x="100" y="110" width="20" height="20" href="data:image/svg+xml;utf8,${country_flag}"/>` : "";
 
         return `<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" fill="none">
         <style>
@@ -103,7 +105,7 @@ export default class TeamCard {
         <text id="progress-text" x="330" y="141" font-size="12" fill="#000000">${!isNaN(this.country_rating) ? this.country_rating.toString(): "N/A"}</text>
         </g>
         <text x="20" y="180" font-size="10" fill="#6a737d">Powered by </text>
-        <image x="75" y="157" width="40" height="40" href="https://ctftime.org/static/images/ct/logo.svg"/>
+        <image x="75" y="157" width="40" height="40" href="data:image/svg+xml;utf8,${ctftime_logo}"/>
     </svg>`;
     }
 }

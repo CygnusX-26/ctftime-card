@@ -6,6 +6,11 @@ import express, { Request, Response } from 'express';
 const app = express();
 const port = 3000;
 
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+});
+
 app.get('/', async (req: Request, res: Response) => {
     const teamid: string = req.query.teamid as string;
     const year: number = new Date().getFullYear();
@@ -17,14 +22,14 @@ app.get('/', async (req: Request, res: Response) => {
     }
 
     (get_team(parseInt(teamid))).then((data): void => {
-        res.send(
-            new TeamCard(
-                escape_xml(data.name),
-                escape_xml(data.logo), 
-                escape_xml(data.country),
-                data.rating[year].country_place,
-                data.rating[year].rating_place).render_svg()
-            );
+        new TeamCard(
+            escape_xml(data.name),
+            escape_xml(data.logo), 
+            escape_xml(data.country),
+            data.rating[year].country_place,
+            data.rating[year].rating_place).render_svg().then((svg) => {
+                res.send(svg);
+            })
         return;
     }).catch((err): void => {
         console.log(err);

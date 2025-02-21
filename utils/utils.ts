@@ -1,4 +1,5 @@
 import TeamCard from "../cards/TeamCard";
+import * as fs from 'fs/promises';
 
 const TEAMS_URL_BASE: string = "https://ctftime.org/api/v1/teams/"
 
@@ -54,4 +55,23 @@ export const escape_xml = (str: string): string => {
         };
         return escapeMap[char] || char;
     });
+}
+
+export const image_to_base64 = async (url: string): Promise<string> => {
+    const response: Response = await fetch(url);
+    const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+    const buffer: Buffer = Buffer.from(arrayBuffer);
+    return buffer.toString('base64');
+}
+
+export const image_to_svg = async (url: string): Promise<string> => {
+    const response: Response = await fetch(url);
+    const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+    const buffer: Buffer = Buffer.from(arrayBuffer);
+    const svgText:string = buffer.toString('utf-8');
+    return encodeURIComponent(svgText);
+}
+
+export const get_ctftime_logo = async (): Promise<string> => {
+    return encodeURIComponent(await fs.readFile("./imgs/logo.svg", 'utf-8'));
 }
