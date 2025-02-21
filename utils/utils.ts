@@ -1,4 +1,4 @@
-import * as fs from 'fs/promises';
+import { readFile } from 'fs/promises';
 
 const TEAMS_URL_BASE: string = "https://ctftime.org/api/v1/teams/"
 
@@ -90,5 +90,5 @@ export const image_to_svg = async (url: string): Promise<string> => {
  */
 
 export const get_ctftime_logo = async (): Promise<string> => {
-    return encodeURIComponent(await fs.readFile("./imgs/logo.svg", 'utf-8'));
+    return encodeURIComponent(await readFile("./imgs/logo.svg", 'utf-8'));
 }
