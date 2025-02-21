@@ -62,8 +62,8 @@ export class TeamCard {
         const global_bar_fill: number = Math.floor((1 - global_percentage) * 300);
         const country_bar_fill: number = Math.floor((1 - country_percentage) * 300);
 
-        const logo_b64: string = await image_to_base64(this.logo);
-        const country_flag = await image_to_svg(`https://ctftime.org/static/images/sf/${this.country.toLowerCase()}.svg`);
+        const logo_b64: string = this.logo.length > 0 ? await image_to_base64(this.logo) : "";
+        const country_flag = this.country.length > 0 ? await image_to_svg(`https://ctftime.org/static/images/sf/${this.country.toLowerCase()}.svg`): "";
         const ctftime_logo = await get_ctftime_logo();
 
         let logo_str: string = this.logo.length > 0 ? `<image x="320" y="20" width="60" height="60" href="data:image/png;base64,${logo_b64}"/>`: "";
