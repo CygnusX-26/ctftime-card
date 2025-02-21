@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use((req, res, next) => {
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'public, max-age=60');
     next();
 });
 

@@ -1,9 +1,15 @@
 import { get_ctftime_logo, image_to_base64, image_to_svg } from "../utils/utils";
 
+enum Theme {
+    LIGHT,
+    DARK
+}
+
 interface Dimensions {
     width: number,
     height: number,
-    duration: number
+    duration: number,
+    theme: Theme
 }
 
 /**
@@ -25,7 +31,7 @@ export default class TeamCard {
         country: string = "us",
         country_rating: number = NaN,
         global_rating: number = NaN,
-        dimensions: Dimensions = {width: 200, height: 100, duration: 2}
+        dimensions: Dimensions = {width: 400, height: 200, duration: 2, theme: Theme.LIGHT}
     ) {
         this.name = name;
         this.logo = logo;
@@ -34,6 +40,7 @@ export default class TeamCard {
         this.global_rating = global_rating;
         this.dimensions = dimensions
     }
+
     /**
      * Generates the svg of a team card.
      * @returns the svg
@@ -60,7 +67,7 @@ export default class TeamCard {
         let logo_str: string = this.logo.length > 0 ? `<image x="320" y="20" width="60" height="60" href="data:image/png;base64,${logo_b64}"/>`: "";
         let country_str: string = this.country.length > 0 ? `<image x="100" y="110" width="20" height="20" href="data:image/svg+xml;utf8,${country_flag}"/>` : "";
 
-        return `<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+        return `<svg width="${this.dimensions.width.toString()}" height="${this.dimensions.height.toString()}" viewBox="0 0 ${this.dimensions.width.toString()} ${this.dimensions.height.toString()}" xmlns="http://www.w3.org/2000/svg" fill="none">
         <style>
             /* latin */
             @font-face {
@@ -81,8 +88,8 @@ export default class TeamCard {
                 to { opacity: 1; }
             }
         </style>
-        <rect x="0" y="0" width="400" height="200" rx="7.5" fill="#fff" stroke="#e1e4e8" stroke-width="2"/>
-        <text x="20" y="50" font-size="30" font-weight="bold" fill="#000000">${this.name}</text>
+        <rect x="0" y="0" width="${this.dimensions.width.toString()}" height="${this.dimensions.height.toString()}" rx="7.5" fill="#fff" stroke="#e1e4e8" stroke-width="2"/>
+        <text x="20" y="50" font-size="30" font-weight="bold" id="team-name" fill="#000000">${this.name}</text>
         <g class="fade-in">
         ${logo_str}
 
@@ -106,6 +113,17 @@ export default class TeamCard {
         </g>
         <text x="20" y="180" font-size="10" fill="#6a737d">Powered by </text>
         <image x="75" y="157" width="40" height="40" href="data:image/svg+xml;utf8,${ctftime_logo}"/>
+        <script>
+            const text = document.getElementById("team-name");
+            
+            let bbox = text.getBBox();
+            let maxWidth = 300;
+
+            if (bbox.width > maxWidth) {
+                let scale = maxWidth / bbox.width;
+                text.setAttribute("transform", \`scale(\$\{scale\}, 1)\`);
+            }
+        </script>
     </svg>`;
     }
 }
