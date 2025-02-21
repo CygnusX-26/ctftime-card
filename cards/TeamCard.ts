@@ -1,6 +1,6 @@
 import { get_ctftime_logo, image_to_base64, image_to_svg } from "../utils/utils";
 
-enum Theme {
+export enum Theme {
     LIGHT,
     DARK
 }
@@ -9,19 +9,19 @@ interface Dimensions {
     width: number,
     height: number,
     duration: number,
-    theme: Theme
 }
 
 /**
  * Represents a card for a ctftime team.
  */
 
-export default class TeamCard {
+export class TeamCard {
     readonly name: string;
     readonly logo: string;
     readonly country: string;
     readonly global_rating: number;
     readonly country_rating: number;
+    readonly theme: Theme;
     dimensions: Dimensions;
     
 
@@ -31,14 +31,16 @@ export default class TeamCard {
         country: string = "us",
         country_rating: number = NaN,
         global_rating: number = NaN,
-        dimensions: Dimensions = {width: 400, height: 200, duration: 2, theme: Theme.LIGHT}
+        theme: Theme = Theme.LIGHT,
+        dimensions: Dimensions = {width: 400, height: 200, duration: 2}
     ) {
         this.name = name;
         this.logo = logo;
         this.country = country;
         this.country_rating = country_rating;
         this.global_rating = global_rating;
-        this.dimensions = dimensions
+        this.theme = theme;
+        this.dimensions = dimensions;
     }
 
     /**
@@ -67,6 +69,18 @@ export default class TeamCard {
         let logo_str: string = this.logo.length > 0 ? `<image x="320" y="20" width="60" height="60" href="data:image/png;base64,${logo_b64}"/>`: "";
         let country_str: string = this.country.length > 0 ? `<image x="100" y="110" width="20" height="20" href="data:image/svg+xml;utf8,${country_flag}"/>` : "";
 
+        let bg_color: string = "#ffffff";
+        let text_color: string = "#000000";
+        let bar_color_filled: string = "#4CAF50";
+        let bar_color_unfilled: string = "#e4e4e4";
+
+        if (this.theme == Theme.DARK) {
+            bg_color = "#24292e";
+            text_color = "#ffffff";
+            bar_color_filled = "#0d74e7";
+            bar_color_unfilled = "#e4e4e4";
+        }
+
         return `<svg width="${this.dimensions.width.toString()}" height="${this.dimensions.height.toString()}" viewBox="0 0 ${this.dimensions.width.toString()} ${this.dimensions.height.toString()}" xmlns="http://www.w3.org/2000/svg" fill="none">
         <style>
             /* latin */
@@ -88,28 +102,28 @@ export default class TeamCard {
                 to { opacity: 1; }
             }
         </style>
-        <rect x="0" y="0" width="${this.dimensions.width.toString()}" height="${this.dimensions.height.toString()}" rx="7.5" fill="#fff" stroke="#e1e4e8" stroke-width="2"/>
-        <text x="20" y="50" font-size="30" font-weight="bold" id="team-name" fill="#000000">${this.name}</text>
+        <rect x="0" y="0" width="${this.dimensions.width.toString()}" height="${this.dimensions.height.toString()}" rx="7.5" fill="${bg_color}" stroke="#e1e4e8" stroke-width="2"/>
+        <text x="20" y="50" font-size="30" font-weight="bold" id="team-name" fill="${text_color}">${this.name}</text>
         <g class="fade-in">
         ${logo_str}
 
-        <text x="20" y="90" font-size="13" fill="#000000">Global rank</text>
-        <rect x="20" y="100" width="300" height="5" rx="2" fill="#e4e4e4"/>
+        <text x="20" y="90" font-size="13" fill="${text_color}">Global rank</text>
+        <rect x="20" y="100" width="300" height="5" rx="2" fill="${bar_color_unfilled}"/>
 
-        <rect id="progress-bar" x="20" y="100" width="0" height="5" rx="2" fill="#4CAF50">
+        <rect id="progress-bar" x="20" y="100" width="0" height="5" rx="2" fill="${bar_color_filled}">
             <animate attributeName="width" from="0" to="${global_bar_fill}" dur="${this.dimensions.duration.toString()}s" fill="freeze"/>
         </rect>
-        <text id="progress-text" x="330" y="106" font-size="12" fill="#000000">${!isNaN(this.global_rating) ? this.global_rating.toString(): "N/A"}</text>
+        <text id="progress-text" x="330" y="106" font-size="12" fill="${text_color}">${!isNaN(this.global_rating) ? this.global_rating.toString(): "N/A"}</text>
         
         
-        <text x="20" y="125" font-size="13" fill="#000000">Country rank</text>
+        <text x="20" y="125" font-size="13" fill="${text_color}">Country rank</text>
         ${country_str}
-        <rect x="20" y="135" width="300" height="5" rx="2" fill="#e4e4e4"/>
+        <rect x="20" y="135" width="300" height="5" rx="2" fill="${bar_color_unfilled}"/>
 
-        <rect id="progress-bar" x="20" y="135" width="0" height="5" rx="2" fill="#4CAF50">
+        <rect id="progress-bar" x="20" y="135" width="0" height="5" rx="2" fill="${bar_color_filled}">
             <animate attributeName="width" from="0" to="${country_bar_fill}" dur="${this.dimensions.duration.toString()}s" fill="freeze"/>
         </rect>
-        <text id="progress-text" x="330" y="141" font-size="12" fill="#000000">${!isNaN(this.country_rating) ? this.country_rating.toString(): "N/A"}</text>
+        <text id="progress-text" x="330" y="141" font-size="12" fill="${text_color}">${!isNaN(this.country_rating) ? this.country_rating.toString(): "N/A"}</text>
         </g>
         <text x="20" y="180" font-size="10" fill="#6a737d">Powered by </text>
         <image x="75" y="157" width="40" height="40" href="data:image/svg+xml;utf8,${ctftime_logo}"/>

@@ -1,4 +1,3 @@
-import TeamCard from "../cards/TeamCard";
 import * as fs from 'fs/promises';
 
 const TEAMS_URL_BASE: string = "https://ctftime.org/api/v1/teams/"
@@ -11,17 +10,18 @@ interface RatingData {
 }
 
 interface TeamData {
-  academic: boolean,
-  primary_alias: string,
-  university_website?: string,
-  name: string,
-  rating: Record<string, RatingData>,
-  logo: string,
-  country: string,
-  university: string,
-  id: number,
-  aliases: string[]
+    academic: boolean,
+    primary_alias: string,
+    university_website?: string,
+    name: string,
+    rating: Record<string, RatingData>,
+    logo: string,
+    country: string,
+    university: string,
+    id: number,
+    aliases: string[]
 }
+
 
 /**
  * Returns the ctftime team data based on team id.
