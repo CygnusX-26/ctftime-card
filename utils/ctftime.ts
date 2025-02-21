@@ -31,7 +31,6 @@ export const get_team = async (team_id: number): Promise<TeamData> => {
         const response = await fetch(`${TEAMS_URL_BASE}${team_id.toString()}/`);
         return await response.json() as TeamData;
     } catch (error) {
-        console.log("Error fetching data")
         return {} as TeamData;
     }
 }
