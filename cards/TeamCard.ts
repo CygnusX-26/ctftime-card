@@ -49,6 +49,9 @@ export default class TeamCard {
         const global_bar_fill: number = Math.floor((1 - global_percentage) * 300);
         const country_bar_fill: number = Math.floor((1 - country_percentage) * 300);
 
+        let logo_str: string = this.logo.length > 0 ? `<image x="320" y="20" width="60" height="60" href="${this.logo}"/>`: "";
+        let country_str: string = this.country.length > 0 ? `<image x="100" y="110" width="20" height="20" href="https://ctftime.org/static/images/sf/${this.country.toLowerCase()}.svg"/>` : "";
+
         return `
     <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" fill="none">
         <style>
@@ -66,7 +69,7 @@ export default class TeamCard {
         <rect x="0" y="0" width="400" height="200" rx="7.5" fill="#fff" stroke="#e1e4e8" stroke-width="2"/>
         <text x="20" y="50" font-size="30" font-weight="bold" fill="#000000">${this.name}</text>
 
-        <image x="320" y="20" width="60" height="60" href="${this.logo}"/>
+        ${logo_str}
 
         <text x="20" y="90" font-size="13" fill="#000000">Global rank</text>
         <rect x="20" y="100" width="300" height="5" rx="2" fill="#e4e4e4"/>
@@ -78,7 +81,7 @@ export default class TeamCard {
         
         
         <text x="20" y="125" font-size="13" fill="#000000">Country rank</text>
-        <image x="100" y="110" width="20" height="20" href="https://ctftime.org/static/images/sf/${this.country.toLowerCase()}.svg"/>
+        ${country_str}
         <rect x="20" y="135" width="300" height="5" rx="2" fill="#e4e4e4"/>
 
         <rect id="progress-bar" x="20" y="135" width="0" height="5" rx="2" fill="#4CAF50">
