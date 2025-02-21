@@ -1,0 +1,6 @@
+services:
+  app:
+    container_name: express-ts-app
+    build: .
+    ports:
+      - "11464:3000"
