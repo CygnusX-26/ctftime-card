@@ -1,5 +1,5 @@
 import { get_team, escape_xml } from "./utils/utils.js"
-import { TeamCard, Theme } from "./cards/TeamCard.js"
+import { TeamCard, Theme, Dimensions } from "./cards/TeamCard.js"
 import { error_svg } from "./utils/error.js";
 import express, { Request, Response } from 'express';
 
@@ -14,6 +14,8 @@ app.use((req, res, next) => {
 app.get('/', async (req: Request, res: Response) => {
     const teamid: string = req.query.teamid as string;
     const year: number = new Date().getFullYear();
+    let x: string = req.query.x as string;
+    let y: string = req.query.y as string;
     let theme: Theme = Theme.LIGHT;
     res.set('Content-Type', 'image/svg+xml');
 
@@ -26,6 +28,15 @@ app.get('/', async (req: Request, res: Response) => {
         theme = Theme.DARK;
     }
 
+    let x_dim = 400;
+    if (x && parseInt(x)) {
+        x_dim = parseInt(x);
+    }
+    let y_dim = 200;
+    if (y && parseInt(y)) {
+        y_dim = parseInt(y);
+    }
+
     (get_team(parseInt(teamid))).then((data): void => {
         new TeamCard(
             escape_xml(data.name),
@@ -33,7 +44,8 @@ app.get('/', async (req: Request, res: Response) => {
             escape_xml(data.country),
             data.rating[year].country_place,
             data.rating[year].rating_place,
-            theme).render_svg().then((svg) => {
+            theme,
+            {width: x_dim, height: y_dim, duration: 2}).render_svg().then((svg) => {
                 res.send(svg);
             })
         return;
