@@ -3,4 +3,5 @@ services:
     container_name: express-ts-app
     build: .
     ports:
-      - "11464:3000"
+      - "5669:3000"
+    restart: always

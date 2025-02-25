@@ -39,9 +39,9 @@ app.get('/', async (req: Request, res: Response) => {
 
     (get_team(parseInt(teamid))).then((data): void => {
         new TeamCard(
-            escape_xml(data.name),
-            escape_xml(data.logo), 
-            escape_xml(data.country),
+            escape_xml(data.name ? data.name : ""),
+            escape_xml(data.logo ? data.logo : ""), 
+            escape_xml(data.country ? data.country : ""),
             data.rating[year].country_place,
             data.rating[year].rating_place,
             theme,

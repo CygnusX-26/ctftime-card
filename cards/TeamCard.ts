@@ -81,9 +81,9 @@ export class TeamCard {
             bar_color_unfilled = "#e4e4e4";
         }
 
-        const fit_to_dimension = (value: number): number => {
-            return value;
-        }
+        const font_size_large: string = "2em";
+        const font_size_medium: string = "0.83em";
+        const font_size_small: string = "0.66em";
 
         return `<svg width="${this.dimensions.width.toString()}" height="${this.dimensions.height.toString()}" viewBox="0 0 ${this.dimensions.width.toString()} ${this.dimensions.height.toString()}" xmlns="http://www.w3.org/2000/svg" fill="none">
         <style>
@@ -107,30 +107,30 @@ export class TeamCard {
             }
         </style>
         <rect x="0%" y="0%" width="100%" height="100%" rx="7.5" fill="${bg_color}" stroke="#e1e4e8" stroke-width="2"/>
-        <text x="5%" y="25%" font-size="2em" font-weight="bold" id="team-name" fill="${text_color}">${this.name}</text>
+        <text x="5%" y="30%" font-size="${font_size_large}" font-weight="bold" id="team-name" fill="${text_color}">${this.name}</text>
         <g class="fade-in">
         ${logo_str}
 
-        <text x="5%" y="45%" font-size="0.83em" fill="${text_color}">Global rank</text>
+        <text x="5%" y="45%" font-size="${font_size_medium}" fill="${text_color}">Global rank</text>
         <rect x="5%" y="50%" width="75%" height="2.5%" rx="2" fill="${bar_color_unfilled}"/>
 
         <rect id="progress-bar" x="5%" y="50%" width="0%" height="2.5%" rx="2" fill="${bar_color_filled}">
             <animate attributeName="width" from="0%" to="${global_bar_fill}%" dur="${this.dimensions.duration.toString()}s" fill="freeze"/>
         </rect>
-        <text id="progress-text" x="82.5%" y="53%" font-size="0.8em" fill="${text_color}">${!isNaN(this.global_rating) ? this.global_rating.toString(): "N/A"}</text>
+        <text id="progress-text" x="82.5%" y="53%" font-size="${font_size_medium}" fill="${text_color}">${!isNaN(this.global_rating) ? this.global_rating.toString(): "N/A"}</text>
         
         
-        <text x="5%" y="62.5%" font-size="0.83em" fill="${text_color}">Country rank</text>
+        <text x="5%" y="62.5%" font-size="${font_size_medium}" fill="${text_color}">Country rank</text>
         ${country_str}
         <rect x="5%" y="67.5%" width="75%" height="2.5%" rx="2" fill="${bar_color_unfilled}"/>
 
         <rect id="progress-bar" x="5%" y="67.5%" width="0%" height="2.5%" rx="2" fill="${bar_color_filled}">
             <animate attributeName="width" from="0%" to="${country_bar_fill}%" dur="${this.dimensions.duration.toString()}s" fill="freeze"/>
         </rect>
-        <text id="progress-text" x="82.5%" y="70.5%" font-size="0.8em" fill="${text_color}">${!isNaN(this.country_rating) ? this.country_rating.toString(): "N/A"}</text>
+        <text id="progress-text" x="82.5%" y="70.5%" font-size="${font_size_medium}" fill="${text_color}">${!isNaN(this.country_rating) ? this.country_rating.toString(): "N/A"}</text>
         </g>
-        <text x="5%" y="90%" font-size="0.66em" fill="#6a737d">Powered by </text>
-        <image x="18.75%" y="78.5%" width="10%" height="20%" href="data:image/svg+xml;utf8,${ctftime_logo}"/>
+        <text x="5%" y="90%" font-size="${font_size_small}" fill="#6a737d">Powered by </text>
+        <image x="20%" y="78.5%" width="10%" height="20%" href="data:image/svg+xml;utf8,${ctftime_logo}"/>
         <script>
             function scaleText() {
                 const text = document.getElementById("team-name");
